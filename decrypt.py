@@ -45,8 +45,8 @@ def prepare_text(plaintext):
         prepared += "x"
     return prepared
 
-# Playfair encryption
-def playfair_encrypt(plaintext, key):
+# Playfair decryption
+def playfair_decrypt(plaintext, key):
     matrix = generate_matrix(key)
     prepared = prepare_text(plaintext)
     ciphertext = ""
@@ -76,7 +76,8 @@ plaintext = st.text_area("Enter Ciphertext:")
 
 if st.button("Decrypt"):
     if key and plaintext:
-        encrypted_text = playfair_encrypt(plaintext, key)
-        st.success(f"✅ Decrypted Text: {encrypted_text}")
+        decrypted_text = playfair_decrypt(plaintext, key)
+        #st.success(f"✅ Decrypted Text: {decrypted_text}")
+        st.balloons("Your Team name is :",decrypted_text)
     else:
         st.warning("Please enter both key and plaintext.")
