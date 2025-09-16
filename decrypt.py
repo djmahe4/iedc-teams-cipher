@@ -27,7 +27,7 @@ def find_position(matrix, char):
                 return i, j
     return None
 
-# Clean ciphertext (basic preprocessing only)
+# Clean ciphertext
 def clean_text(ciphertext):
     return re.sub(r'[^A-Za-z]', '', ciphertext).upper().replace("J", "I")
 
@@ -51,7 +51,7 @@ def playfair_decrypt(ciphertext, key):
         elif col_a == col_b:  # Same column → shift up
             plaintext += matrix[(row_a - 1) % 5][col_a]
             plaintext += matrix[(row_b - 1) % 5][col_b]
-        else:  # Rectangle swap
+        else:  # Rectangle
             plaintext += matrix[row_a][col_b]
             plaintext += matrix[row_b][col_a]
 
@@ -59,7 +59,6 @@ def playfair_decrypt(ciphertext, key):
 
 # Streamlit UI
 st.title("🔐 IEDC Cipher Decryption Tool")
-
 key = st.secrets["key"]
 ciphertext = st.text_area("Enter Ciphertext:")
 
