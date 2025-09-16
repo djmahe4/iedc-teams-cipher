@@ -78,6 +78,6 @@ if st.button("Decrypt"):
     if key and ciphertext:
         decrypted_text = playfair_decrypt(ciphertext, key)
         #st.success(f"✅ Decrypted Text: {decrypted_text}")
-        st.balloons("Your Team name is :",decrypted_text)
+        st.balloons(f"Your Team name is :{decrypted_text}")
     else:
         st.warning("Please enter both key and ciphertext.")
