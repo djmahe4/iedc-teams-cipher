@@ -27,9 +27,9 @@ def find_position(matrix, char):
                 return i, j
     return None
 
-# Preprocess plaintext
-def prepare_text(plaintext):
-    text = re.sub(r'[^A-Za-z]', '', plaintext).upper().replace("J", "I")
+# Preprocess ciphertext
+def prepare_text(ciphertext):
+    text = re.sub(r'[^A-Za-z]', '', ciphertext).upper().replace("J", "I")
     prepared = ""
     i = 0
     while i < len(text):
@@ -46,9 +46,9 @@ def prepare_text(plaintext):
     return prepared
 
 # Playfair decryption
-def playfair_decrypt(plaintext, key):
+def playfair_decrypt(ciphertext, key):
     matrix = generate_matrix(key)
-    prepared = prepare_text(plaintext)
+    prepared = prepare_text(ciphertext)
     ciphertext = ""
 
     for i in range(0, len(prepared), 2):
@@ -72,12 +72,12 @@ def playfair_decrypt(plaintext, key):
 st.title("🔐 IEDC Cipher Decryption Tool")
 
 key = st.secrets["key"]
-plaintext = st.text_area("Enter Ciphertext:")
+ciphertext = st.text_area("Enter Ciphertext:")
 
 if st.button("Decrypt"):
-    if key and plaintext:
-        decrypted_text = playfair_decrypt(plaintext, key)
+    if key and ciphertext:
+        decrypted_text = playfair_decrypt(ciphertext, key)
         #st.success(f"✅ Decrypted Text: {decrypted_text}")
         st.balloons("Your Team name is :",decrypted_text)
     else:
-        st.warning("Please enter both key and plaintext.")
+        st.warning("Please enter both key and ciphertext.")
