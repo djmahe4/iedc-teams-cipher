@@ -27,17 +27,17 @@ def find_position(matrix, char):
                 return i, j
     return None
 
-# Playfair decryption
-def playfair_decrypt(ciphertext, key):
+# Playfair encryption
+def playfair_encrypt(plaintext, key):
     matrix = generate_matrix(key)
-    ciphertext = re.sub(r'[^A-Za-z]', '', ciphertext).upper().replace("J", "I")
+    plaintext = re.sub(r'[^A-Za-z]', '', plaintext).upper().replace("J", "I")
 
-    if len(ciphertext) % 2 != 0:
-        ciphertext += "X"  # padding if needed
+    if len(plaintext) % 2 != 0:
+        plaintext += "X"  # padding if needed
 
     plaintext = ""
-    for i in range(0, len(ciphertext), 2):
-        a, b = ciphertext[i], ciphertext[i+1]
+    for i in range(0, len(plaintext), 2):
+        a, b = plaintext[i], plaintext[i+1]
         row_a, col_a = find_position(matrix, a)
         row_b, col_b = find_position(matrix, b)
 
@@ -57,11 +57,11 @@ def playfair_decrypt(ciphertext, key):
 st.title("🔐 IEDC Cipher Encryption Tool")
 
 key = st.secrets["key"]
-ciphertext = st.text_area("Enter Plaintext:")
+plaintext = st.text_area("Enter Plaintext:")
 
 if st.button("Encrypt"):
-    if key and ciphertext:
-        decrypted_text = playfair_decrypt(ciphertext, key)
-        st.success(f"✅ Decrypted Text: {decrypted_text}")
+    if key and plaintext:
+        encrypted_text = playfair_encrypt(plaintext, key)
+        st.success(f"✅ Encrypted Text: {encrypted_text}")
     else:
-        st.warning("Please enter both key and ciphertext.")
+        st.warning("Please enter both key and plaintext.")
