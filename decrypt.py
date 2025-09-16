@@ -27,46 +27,35 @@ def find_position(matrix, char):
                 return i, j
     return None
 
-# Preprocess ciphertext
-def prepare_text(ciphertext):
-    text = re.sub(r'[^A-Za-z]', '', ciphertext).upper().replace("J", "I")
-    prepared = ""
-    i = 0
-    while i < len(text):
-        a = text[i]
-        b = text[i+1] if i+1 < len(text) else "x"
-        if a == b:  # avoid duplicates in a pair
-            prepared += a + "x"
-            i += 1
-        else:
-            prepared += a + b
-            i += 2
-    if len(prepared) % 2 != 0:  # padding
-        prepared += "x"
-    return prepared
+# Clean ciphertext (basic preprocessing only)
+def clean_text(ciphertext):
+    return re.sub(r'[^A-Za-z]', '', ciphertext).upper().replace("J", "I")
 
 # Playfair decryption
 def playfair_decrypt(ciphertext, key):
     matrix = generate_matrix(key)
-    prepared = prepare_text(ciphertext)
-    ciphertext = ""
+    text = clean_text(ciphertext)
 
-    for i in range(0, len(prepared), 2):
-        a, b = prepared[i], prepared[i+1]
+    if len(text) % 2 != 0:
+        text += "X"  # padding if needed
+
+    plaintext = ""
+    for i in range(0, len(text), 2):
+        a, b = text[i], text[i+1]
         row_a, col_a = find_position(matrix, a)
         row_b, col_b = find_position(matrix, b)
 
-        if row_a == row_b:  # Same row
-            ciphertext += matrix[row_a][(col_a + 1) % 5]
-            ciphertext += matrix[row_b][(col_b + 1) % 5]
-        elif col_a == col_b:  # Same column
-            ciphertext += matrix[(row_a + 1) % 5][col_a]
-            ciphertext += matrix[(row_b + 1) % 5][col_b]
-        else:  # Rectangle
-            ciphertext += matrix[row_a][col_b]
-            ciphertext += matrix[row_b][col_a]
+        if row_a == row_b:  # Same row → shift left
+            plaintext += matrix[row_a][(col_a - 1) % 5]
+            plaintext += matrix[row_b][(col_b - 1) % 5]
+        elif col_a == col_b:  # Same column → shift up
+            plaintext += matrix[(row_a - 1) % 5][col_a]
+            plaintext += matrix[(row_b - 1) % 5][col_b]
+        else:  # Rectangle swap
+            plaintext += matrix[row_a][col_b]
+            plaintext += matrix[row_b][col_a]
 
-    return ciphertext
+    return plaintext
 
 # Streamlit UI
 st.title("🔐 IEDC Cipher Decryption Tool")
@@ -77,8 +66,7 @@ ciphertext = st.text_area("Enter Ciphertext:")
 if st.button("Decrypt"):
     if key and ciphertext:
         decrypted_text = playfair_decrypt(ciphertext, key)
-        #st.success(f"✅ Decrypted Text: {decrypted_text}")
-        st.success(f"Your Team name is :{decrypted_text}")
+        st.success(f"✅ Your Team name is : {decrypted_text}")
         st.balloons()
     else:
         st.warning("Please enter both key and ciphertext.")
