@@ -1,5 +1,5 @@
 # iedc-teams-cipher
-Web app for decrypting IEDC Team names<br>
+Web apps for encrypting and decrypting IEDC Team names<br>
 
 
 **[Decryption](https://iedc-teams-cipher.streamlit.app/)** <br>
