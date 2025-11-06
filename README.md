@@ -90,12 +90,12 @@ This project implements the **Playfair cipher**, a manual symmetric encryption t
 
 ```
 iedc-teams-cipher/
-├── encrypt.py          # Streamlit app for encryption
-├── decrypt.py          # Streamlit app for decryption
-├── requirements.txt    # Python dependencies
-├── .streamlit/         # Streamlit configuration (local only)
-│   └── secrets.toml   # Secret key storage (not in repo)
-└── README.md          # This file
+├── encrypt.py                  # Streamlit app for encryption
+├── decrypt.py                  # Streamlit app for decryption
+├── requirements.txt            # Python dependencies
+├── .streamlit/                 # Streamlit configuration directory
+│   └── secrets.toml           # Secret key storage (local development only, not in repo)
+└── README.md                   # This file
 ```
 
 ## Security Notes
